@@ -19,187 +19,87 @@ public class Input
 
     }
     
+    /**
+     * Takes in a csv file, read every line, split it by comma, and
+     * put into a 2D String array. First read each line of the csv file, 
+     * replace all commas with ",###" in the csv file to take blank spaces 
+     * into account for calculating length, split by ",###", put into 
+     * a 2D string array [linenumber][split string array].
+     * 
+     * Resulting array will have a format like below:
+     * 
+     * [Nr][Date][Major][Region][Hobby][Yes][No][No]...
+     * [Nr][Date][Major][Region][Hobby][Yes][Yes][Yes]...
+     * 
+     * @param fileName of the csv file to be scanned
+     * @return the 2D array representation of the survey data
+     * @throws IOException
+     */
     public String[][] readData(String fileName) throws IOException
     {
         BufferedReader dataBR = new BufferedReader(new FileReader(new File(fileName)));
-        dataBR.readLine();
+        dataBR.readLine(); // skips first line. First lines are both files are just descriptions.
         String dataRow = dataBR.readLine();
         int line = 0;
-        String[][] store = new String[210][123];
-        
+        String[][] store = new String[209][124];
+
         while (dataRow != null) 
         {
-            dataRow = dataRow.replaceAll(",", ",###");
-            String[] row = dataRow.split(",");
-            
-            for (int i = 0; i < row.length; i++)
+            if (line < 209) // last line (209) of MusicSurveyData.csv contains description as well.
             {
-                row[i] = row[i].replaceAll("###", "");
-                System.out.println("STRING: " + row[i]);
-            }
-            
-            
-            if (row.length < 123)
-            {
-                for (int i = 0; i < row.length; i++)
+                dataRow = dataRow.replaceAll(",", ",###"); // blank data (,,) will now have (,###,) so that
+                String[] row = dataRow.split(","); // when split by comma, blank data still counts as a space
+                if (row.length < 124) // preventing array out of bounds
                 {
-                    store[line][i] = row[i];
+                    for (int i = 0; i < row.length; i++)
+                    {
+                        row[i] = row[i].replaceAll("###", ""); // now remove ### and let blank data blank
+                        store[line][i] = row[i];
+                    }
                 }
+
+                dataRow = dataBR.readLine(); // goes to next line
             }
-            dataRow = dataBR.readLine();
-            line++; 
+            line++;
         }
-        
-        dataBR.close();
-        
+
+        dataBR.close(); // close the buffered reader
+
         return store;
     }
+
     
-    
+    /**
+     * Using a 2D array of MusicData and a 2D array of MusicList,
+     * create a song for each index of MusicList
+     * 1) with the title, artist, release year, genre read from MusicList array;
+     * 2) with the String array of percentage of "Yes" to heard of this song for each major
+     * 3) with the String array of percentage of "Yes" to likes of this song for each major
+     * ...
+     * 7) with the String array of precentage of "Yes" to likes of this song for each hobby
+     * 
+     * Then, add each song to the list and return the list.
+     *  
+     * @return list of songs
+     * @throws IOException
+     */
     public DLinkedList<Song> processList() throws IOException
     {
         DLinkedList<Song> list = new DLinkedList<Song>();
         String[][] parsedData = readData("MusicSurveyData.csv");
         String[][] parsedList = readData("SongList.csv");
-        
-        
-        System.out.println(parsedList[0][20]);
-        
-        for (int i = 0; i < 58; i++)
+
+        for (int i = 0; i < 58; i++) // total of 59 songs
         {
             String title = parsedList[i][0];
             String artist = parsedList[i][1];
             int year = Integer.parseInt(parsedList[i][2]);
             String genre = parsedList[i][3];
-            System.out.println(year);
-            
-            //list.add(new Song(title, artist, year, genre, String[], String[], String[]));
-        }
-        
-        return list;
-    }
-    
-    
-    
-    /*
-    public MusicList<Song> readFile(String fileName1, String fileName2)
-    {
-        MusicList<Song> list = new MusicList<Song>();
-        Parser parsedData = new Parser(fileName1);
-        Parser parsedSong = new Parser(fileName2);
-        String[][] parsedTextData = parsedData.parseText();
-        String[][] parsedTextSong = parsedSong.parseText();
-        System.out.println(parsedTextData[0][122]);
-        System.out.println(parsedTextSong[0][2]);
-        
-        String answer = parsedTextData[0][122];
-        System.out.println(answer);
-        
-        for (int i = 0; i < 59; i++)
-        {
-            String title = parsedTextSong[i][0];
-            String artist = parsedTextSong[i][1];
-            int year = Integer.parseInt(parsedTextSong[i][2]);
-            String genre = parsedTextSong[i][3];
-            //list.enqueue(new Song(title, artist, year, genre, string[], string[], string[]));
+            Song song = new Song(title, artist, year, genre);
+            list.addBeginning(song);
         }
 
         return list;
     }
-    */
 
-
-    public String[] calcHobbyHeard(int index, String[][] parsedTextData)
-    {
-        int countMath = 0;
-        int countCS = 0;
-        int countOther = 0;
-        int countEnge = 0;
-        index = index + 5 + index;
-        System.out.println(parsedTextData[0][120]);
-        for (int i = 0; i < parsedTextData.length; i++)
-        {
-            if (parsedTextData[i][index] == "Yes")
-            {
-                if (parsedTextData[i][2] == "Math or CMDA")
-                {
-                    countMath++;
-                }
-                if (parsedTextData[i][2] == "Computer Science")
-                {
-                    countCS++;
-                }
-                if (parsedTextData[i][2] == "Other")
-                {
-                    countOther++;
-                }
-                if (parsedTextData[i][2] == "Other Engineering")
-                {
-                    countEnge++;
-                }
-            }
-        }
-        
-        int sum = countMath + countCS + countOther + countEnge;
-        if (countMath != 0)
-        {
-            countMath = (countMath / sum) * 100;
-        }
-        if (countCS != 0)
-        {
-            countCS = (countCS / sum) * 100;
-        }
-        if (countOther != 0)
-        {
-            countOther = (countOther / sum) * 100;
-        }
-        if (countEnge != 0)
-        {
-            countEnge = (countEnge / sum) * 100;
-        }
-        String[] hobbyHeard = new String[4];
-        hobbyHeard[0] = "" + countMath;
-        hobbyHeard[1] = "" + countCS;
-        hobbyHeard[2] = "" + countOther;
-        hobbyHeard[3] = "" + countEnge;
-        return hobbyHeard;
-    }
-
-
-    /*
-    public MusicList<Song> sortArtist(MusicList<Song> list)
-    {
-
-    }
-
-    public MusicList<Song> sortTitle(MusicList<Song> list)
-    {
-
-    }
-
-    public MusicList<Song> sortYear(MusicList<Song> list)
-    {
-
-    }
-
-    public MusicList<Song> sortGenre(MusicList<Song> list)
-    {
-
-    }
-
-    public MusicList<Song> repMajor(MusicList<Song> list)
-    {
-
-    }
-
-    public MusicList<Song> repRegion(MusicList<Song> list)
-    {
-
-    }
-
-    public MusicList<Song> repHobby(MusicList<Song> list)
-    {
-
-    }
-     */
 }
