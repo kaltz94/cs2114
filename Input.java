@@ -29,8 +29,16 @@ public class Input
         
         while (dataRow != null) 
         {
+            dataRow = dataRow.replaceAll(",", ",###");
             String[] row = dataRow.split(",");
-            System.out.println(row.length);
+            
+            for (int i = 0; i < row.length; i++)
+            {
+                row[i] = row[i].replaceAll("###", "");
+                System.out.println("STRING: " + row[i]);
+            }
+            
+            
             if (row.length < 123)
             {
                 for (int i = 0; i < row.length - 1; i++)
@@ -39,9 +47,7 @@ public class Input
                 }
             }
             dataRow = dataBR.readLine();
-            line++;
-            
-            
+            line++; 
         }
         
         dataBR.close();
@@ -56,6 +62,9 @@ public class Input
         String[][] parsedData = readData("MusicSurveyData.csv");
         String[][] parsedList = readData("SongList.csv");
         
+        
+        System.out.println(parsedList[0][20]);
+        
         for (int i = 0; i < 58; i++)
         {
             String title = parsedList[i][0];
@@ -63,7 +72,8 @@ public class Input
             int year = Integer.parseInt(parsedList[i][2]);
             String genre = parsedList[i][3];
             System.out.println(year);
-            //list.enqueue(new Song(title, artist, year, genre, string[], string[], string[]));
+            
+            //list.add(new Song(title, artist, year, genre, String[], String[], String[]));
         }
         
         return list;
@@ -105,20 +115,11 @@ public class Input
         int countCS = 0;
         int countOther = 0;
         int countEnge = 0;
-        int i = 0;
         index = index + 5 + index;
         System.out.println(parsedTextData[0][120]);
-        while(i != parsedTextData.length - 1)
+        for (int i = 0; i < parsedTextData.length; i++)
         {
             if (parsedTextData[i][index] == "Yes")
-            {
-            }
-        }
-
-        /*
-        for (int i = 0; i < parsedTextData.length - 1; i++)
-        {
-            if (parsedTextData[i][2] == "Yes")
             {
                 if (parsedTextData[i][2] == "Math or CMDA")
                 {
@@ -138,7 +139,7 @@ public class Input
                 }
             }
         }
-         */
+        
         int sum = countMath + countCS + countOther + countEnge;
         if (countMath != 0)
         {
