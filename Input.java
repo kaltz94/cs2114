@@ -41,7 +41,7 @@ public class Input
             
             if (row.length < 123)
             {
-                for (int i = 0; i < row.length - 1; i++)
+                for (int i = 0; i < row.length; i++)
                 {
                     store[line][i] = row[i];
                 }
