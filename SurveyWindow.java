@@ -15,15 +15,6 @@ import CS2114.WindowSide;
 public class SurveyWindow
 {
     
-    private Button next;
-    // when clicked, refresh the display/shapes
-    // and place based on the list/its iterator
-    private Button quit;
-    // quits on the window
-    private Button repHobby;
-    private Button repMajor;
-    private Button repRegion;
-    
     private SongDataShape one;
     private SongDataShape two;
     private SongDataShape three;
@@ -44,12 +35,23 @@ public class SurveyWindow
         Button prev = new Button("<- prev");
         Button sortArtist = new Button("sort by Artist");
         Button sortTitle = new Button("sort by Title");
-        Button sortyear = new Button("sort by Release Year");
+        Button sortYear = new Button("sort by Release Year");
         Button sortGenre = new Button("sort by Genre");
         Button next = new Button("next ->");
+        Button repHobby = new Button("represent by Hobby");
+        Button repMajor = new Button("represent by Major");
+        Button repRegion = new Button("represent by Region");
+        Button quit = new Button("quit");
         window.addButton(prev, WindowSide.NORTH);
         window.addButton(sortArtist, WindowSide.NORTH);
         window.addButton(sortTitle, WindowSide.NORTH);
+        window.addButton(sortYear, WindowSide.NORTH);
+        window.addButton(sortGenre, WindowSide.NORTH);
+        window.addButton(next, WindowSide.NORTH);
+        window.addButton(repHobby, WindowSide.SOUTH);
+        window.addButton(repMajor, WindowSide.SOUTH);
+        window.addButton(repRegion, WindowSide.SOUTH);
+        window.addButton(quit, WindowSide.SOUTH);
                 
     }
     
