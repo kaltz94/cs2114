@@ -1,8 +1,4 @@
-package music;
-/**
- * 
- */
-
+package prj5;
 /**
  * A song should contain a title, artist, genre, and year.
  * This class contains the getter methods and compareTo methods
@@ -18,6 +14,7 @@ public class Song
     private String artist;
     private int year;
     private String genre;
+    
     //methods
     /**
      * Create a new Song.
@@ -68,24 +65,39 @@ public class Song
         return genre;
     }
     /**
-     * Compare two titles and 
-     * @param otherTitle
-     * @return 0 if equal
-     * -1 if before and 1 if after
+     * Compare this title with otherTitle.
+     * If same, return 0; if it comes before, 
+     * return a negative integer; else, return 
+     * a positive integer.
+     * 
+     * @param otherTitle a String
+     * @return an integer
      */
     public int compareTitleTo(String otherTitle)
     {
         return title.compareTo(otherTitle);
     }
     /**
+     * Compares the song's artist with the given
+     * string. If same return 0; if this artist comes
+     * before otherArtist alphabetically, return a negative
+     * integer; if it comes after, return a positive integer.
      * 
+     * @param otherArtist a String
+     * @return an integer 
      */
     public int compareArtistTo(String otherArtist)
     {
         return artist.compareTo(otherArtist);
     }
     /**
+     * Compares this genre with otherGenre. 
+     * If same, return 0; if it comes before, 
+     * return a negative integer; else, return 
+     * a positive integer.
      * 
+     * @param otherGenre a String
+     * @return an integer
      */
     public int compareGenreTo(String otherGenre)
     {
