@@ -1,4 +1,4 @@
-package musicsurvey;
+package prj5;
 
 import java.util.Arrays;
 import java.util.ListIterator;
@@ -336,6 +336,45 @@ public class DLinkedList<E> implements ListInterface<E>, Iterable<E> {
         @SuppressWarnings("unchecked")
         DLinkedList<E> other = (DLinkedList<E>) obj;
         return Arrays.equals(this.toArray(), other.toArray());
+    }
+    
+    /**
+     * Returns the index of the first occurrence of the specified entry. 
+     * If it isn't in the list, returns -1.
+     * 
+     * @param entry  The entry to get the index of.
+     * @return The index of the data.
+     */
+    public int indexOf(E entry) {
+        ListIterator<E> iter = this.iterator();
+        int currentIndex = -1;
+        while (iter.hasNext()) {
+            currentIndex++;
+            E currentEntry = iter.next();
+            if (currentEntry.equals(entry)) {
+                return currentIndex;
+            }
+        }
+        return -1;
+    }
+    
+    /**
+     * Swaps the indices of two entries, given their indices.  Throws an
+     * IndexOutOfBoundsException if either index is less than 0 or greater
+     * than the length of the list minus 1.
+     * 
+     * @param first  The index of the first entry.
+     * @param second  The index of the second entry.
+     * @throws IndexOutOfBoundsException  If either index is less than
+     *                                    0 or greater than length - 1.
+     */
+    public void swap(int first, int second) {
+        // IndexOutOfBoundsException will be handled by the next two
+        // calls of getEntry.
+        E firstEntry = this.getEntry(first);
+        E secondEntry = this.getEntry(second);
+        this.replace(first, secondEntry);
+        this.replace(second, firstEntry);
     }
     
     /**

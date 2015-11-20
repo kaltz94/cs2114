@@ -1,4 +1,4 @@
-package musicsurvey;
+package prj5;
 
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
@@ -609,6 +609,182 @@ public class DLinkedListTest extends TestCase{
     }
     
     /**
+     * Tests the indexOf method for an entry at the beginning
+     * of the list.
+     */
+    public void testIndexOfAtBeg() {
+        assertEquals(0, list.indexOf("first"));
+    }
+    
+    /**
+     * Tests the indexOf method for an entry at the middle
+     * of the list.
+     */
+    public void testIndexOfAtMid() {
+        assertEquals(2, list.indexOf("third"));
+    }
+    
+    /**
+     * Tests the indexOf method for an entry at the end
+     * of the list.
+     */
+    public void testIndexOfAtEnd() {
+        assertEquals(3, list.indexOf("fourth"));
+    }
+    
+    /**
+     * Tests the indexOf method for an entry that isn't in
+     * the list.
+     */
+    public void testIndexOfNotInList() {
+        assertEquals(-1, list.indexOf("not in list"));
+    }
+    
+    /**
+     * Tests the swap method for two different entries, the first in
+     * the first half of the list and the second in the second
+     * half.
+     */
+    public void testSwapFirstHalfAndSecondHalf() {
+        list.swap(1, 3);
+        assertEquals(4, list.getLength());
+        assertEquals("first", list.getEntry(0));
+        assertEquals("fourth", list.getEntry(1));
+        assertEquals("third", list.getEntry(2));
+        assertEquals("second", list.getEntry(3));
+    }
+    
+    /**
+     * Tests the swap method for two different entries, the first in
+     * the second half of the list and the second in the first
+     * half.
+     */
+    public void testSwapSecondHalfAndFirstHalf() {
+        list.swap(3, 1);
+        assertEquals(4, list.getLength());
+        assertEquals("first", list.getEntry(0));
+        assertEquals("fourth", list.getEntry(1));
+        assertEquals("third", list.getEntry(2));
+        assertEquals("second", list.getEntry(3));
+    }
+    
+    /**
+     * Tests the swap method for two different entries, when both
+     * are in the first half of the list.
+     */
+    public void testSwapBothFirstHalf() {
+        list.swap(0, 1);
+        assertEquals(4, list.getLength());
+        assertEquals("second", list.getEntry(0));
+        assertEquals("first", list.getEntry(1));
+        assertEquals("third", list.getEntry(2));
+        assertEquals("fourth", list.getEntry(3));
+    }
+    
+    /**
+     * Tests the swap method for two different entries, when both
+     * are in the second half of the list
+     */
+    public void testSwapBothSecondHalf() {
+        list.swap(2, 3);
+        assertEquals(4, list.getLength());
+        assertEquals("first", list.getEntry(0));
+        assertEquals("second", list.getEntry(1));
+        assertEquals("fourth", list.getEntry(2));
+        assertEquals("third", list.getEntry(3));
+    }
+    
+    /**
+     * Tests the swap method for the same entry at the same index
+     * in the first half of the list.
+     */
+    public void testSwapSameIndexFirstHalf() {
+        list.swap(1, 1);
+        assertEquals(4, list.getLength());
+        assertEquals("first", list.getEntry(0));
+        assertEquals("second", list.getEntry(1));
+        assertEquals("third", list.getEntry(2));
+        assertEquals("fourth", list.getEntry(3));
+    }
+    
+    /**
+     * Tests the swap method for the same entry at the same index
+     * in the second half of the list.
+     */
+    public void testSwapSameIndexSecondHalf() {
+        list.swap(3, 3);
+        assertEquals(4, list.getLength());
+        assertEquals("first", list.getEntry(0));
+        assertEquals("second", list.getEntry(1));
+        assertEquals("third", list.getEntry(2));
+        assertEquals("fourth", list.getEntry(3));
+    }
+    
+    /**
+     * Tests the swap method for when the first index is less
+     * than 0.
+     */
+    public void testSwapFirstLessThan0() {
+        Exception thrown = null;
+        try {
+            list.swap(-1, 1);
+        }
+        catch (Exception e) {
+            thrown = e;
+        }
+        assertNotNull(thrown);
+        assertTrue(thrown instanceof IndexOutOfBoundsException);
+    }
+    
+    /**
+     * Tests the swap method for when the first index is greater
+     * than the length of the list minus 1.
+     */
+    public void testSwapFirstGreaterThanLengthMinus1() {
+        Exception thrown = null;
+        try {
+            list.swap(4, 1);
+        }
+        catch (Exception e) {
+            thrown = e;
+        }
+        assertNotNull(thrown);
+        assertTrue(thrown instanceof IndexOutOfBoundsException);
+    }
+    
+    /**
+     * Tests the swap method for when the second index is less
+     * than 0.
+     */
+    public void testSwapSecondLessThan0() {
+        Exception thrown = null;
+        try {
+            list.swap(1, -1);
+        }
+        catch (Exception e) {
+            thrown = e;
+        }
+        assertNotNull(thrown);
+        assertTrue(thrown instanceof IndexOutOfBoundsException);
+    }
+    
+    /**
+     * Tests the swap method for when the second index is greater
+     * than the length of the list minus 1.
+     */
+    public void testSwapSecondGreaterThanLengthMinus1() {
+        Exception thrown = null;
+        try {
+            list.swap(1, 4);
+        }
+        catch (Exception e) {
+            thrown = e;
+        }
+        assertNotNull(thrown);
+        assertTrue(thrown instanceof IndexOutOfBoundsException);
+    }
+    
+    /**
      * Tests the iterator method.
      */
     public void testIterator() {
@@ -616,8 +792,6 @@ public class DLinkedListTest extends TestCase{
         assertTrue(iter.hasNext());
         assertFalse(iter.hasPrevious());
     }
-    
-    // TODO test cases for iterator
     
     /**
      * Tests the Iterator's add method.
