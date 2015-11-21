@@ -208,7 +208,7 @@ public class Input
                 inPointer = 0;
                 while (inPointer != curPointer)
                 {
-                    compare = sorted.getEntry(curPointer).compareGenreTo(sorted.getEntry(inPointer).getTitle());
+                    compare = sorted.getEntry(curPointer).compareGenreTo(sorted.getEntry(inPointer).getGenre());
                     if (compare < 0)
                     {
                         sorted.swap(inPointer, curPointer);
