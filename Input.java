@@ -25,7 +25,6 @@ public class Input
     public Input(String fileName) throws IOException
     {
         GUISurveyWindow window = new GUISurveyWindow(processList(fileName));
-        sortByTitle(processList(fileName));
     }
 
     /**
@@ -34,7 +33,19 @@ public class Input
     {
         String inputData = "";
         String inputList = "";
-
+        if (args[0] != null)
+        {
+            inputData = args[0];
+        }
+        if (args[1] != null)
+        {
+            inputList = args[1];
+        }
+        DLinkedList list = sortByTitle(processList(inputList));
+        for (int i = 0; i < list.getLength(); i++)
+        {
+            
+        }
         Input input = new Input(inputList); 
 
     }
@@ -55,7 +66,7 @@ public class Input
      * @return the 2D array representation of the survey data
      * @throws IOException
      */
-    public String[][] readData(String fileName) throws IOException
+    public static String[][] readData(String fileName) throws IOException
     {
         BufferedReader dataBR = new BufferedReader(new FileReader(new File(fileName)));
         dataBR.readLine(); // skips first line. First lines are both files are just descriptions.
@@ -103,7 +114,7 @@ public class Input
      * @return list of songs
      * @throws IOException
      */
-    public DLinkedList<Song> processList(String fileName) throws IOException
+    public static DLinkedList<Song> processList(String fileName) throws IOException
     {
         DLinkedList<Song> list = new DLinkedList<Song>();
         String[][] parsedList = readData("SongList.csv");
@@ -122,22 +133,32 @@ public class Input
         return list;
     }
 
-    public DLinkedList<Song> sortByTitle(DLinkedList<Song> list)
+    public static DLinkedList<Song> sortByTitle(DLinkedList<Song> list)
     {
         if (!list.isEmpty())
         {
             DLinkedList<Song> sorted = list;
             int inPointer = 0;
-            for (int curPointer = 1; curPointer < list.getLength() - 1; curPointer++)
+            int compare = 0;
+            int curPointer = 1;
+
+
+            while (curPointer != list.getLength())
             {
                 inPointer = 0;
-                int compare = sorted.getEntry(curPointer).compareTitleTo(sorted.getEntry(curPointer + 1).getTitle());
-                if (compare > 0)
+                while (inPointer != curPointer)
                 {
-                    
+                    compare = sorted.getEntry(curPointer).compareTitleTo(sorted.getEntry(inPointer).getTitle());
+                    if (compare < 0)
+                    {
+                        sorted.swap(inPointer, curPointer);
+                    }
+                    inPointer++;
                 }
+
+                curPointer++;
             }
-            System.out.println(sorted.getEntry(0).getTitle());
+
         }
 
         return list;
