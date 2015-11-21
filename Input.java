@@ -5,20 +5,40 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+
+/**
+ * Input two files, MusicSurveyData.csv and SongList.csv, and
+ * output into a specified format using standard out. Parses
+ * the input data into a 2D String array.
+ * 
+ * @author Dayoung Park <dayop13>, Sarah Lee <slee2017>, Ethan Vu <ethanvu7>
+ * @version 2015.11.18
+ *
+ */
 public class Input
 {
+    /**
+     * creates a new Input object
+     * @param fileName of input data
+     * @throws IOException
+     */
     public Input(String fileName) throws IOException
     {
-        SurveyWindow window = new SurveyWindow(processList());//list of songs
+        GUISurveyWindow window = new GUISurveyWindow(processList(fileName));
+        sortByTitle(processList(fileName));
     }
 
+    /**
+     */
     public static void main(String[] args) throws IOException
     {
-        String inputFile = "MusicSurveyData.csv";
-        Input input = new Input(inputFile); 
+        String inputData = "";
+        String inputList = "";
+
+        Input input = new Input(inputList); 
 
     }
-    
+
     /**
      * Takes in a csv file, read every line, split it by comma, and
      * put into a 2D String array. First read each line of the csv file, 
@@ -68,7 +88,7 @@ public class Input
         return store;
     }
 
-    
+
     /**
      * Using a 2D array of MusicData and a 2D array of MusicList,
      * create a song for each index of MusicList
@@ -83,11 +103,11 @@ public class Input
      * @return list of songs
      * @throws IOException
      */
-    public DLinkedList<Song> processList() throws IOException
+    public DLinkedList<Song> processList(String fileName) throws IOException
     {
         DLinkedList<Song> list = new DLinkedList<Song>();
-        String[][] parsedData = readData("MusicSurveyData.csv");
         String[][] parsedList = readData("SongList.csv");
+        String[][] parsedData = readData("MusicSurveyData.csv");
 
         for (int i = 0; i < 58; i++) // total of 59 songs
         {
@@ -100,6 +120,28 @@ public class Input
         }
 
         return list;
+    }
+
+    public DLinkedList<Song> sortByTitle(DLinkedList<Song> list)
+    {
+        if (!list.isEmpty())
+        {
+            DLinkedList<Song> sorted = list;
+            int inPointer = 0;
+            for (int curPointer = 1; curPointer < list.getLength() - 1; curPointer++)
+            {
+                inPointer = 0;
+                int compare = sorted.getEntry(curPointer).compareTitleTo(sorted.getEntry(curPointer + 1).getTitle());
+                if (compare > 0)
+                {
+                    
+                }
+            }
+            System.out.println(sorted.getEntry(0).getTitle());
+        }
+
+        return list;
+
     }
 
 }
