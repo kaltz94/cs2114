@@ -31,8 +31,9 @@ public class Input
      */
     public static void main(String[] args) throws IOException
     {
-        String inputData = "";
-        String inputList = "";
+        String inputData = "MusicSurveyDataTest1.csv";
+        String inputList = "SongListTest1.csv";
+        /*
         if (args[0] != null)
         {
             inputData = args[0];
@@ -41,11 +42,29 @@ public class Input
         {
             inputList = args[1];
         }
-        DLinkedList list = sortByTitle(processList(inputList));
+        */
+        DLinkedList list = sortByGenre(sortByTitle(processList(inputList)));
+        
         for (int i = 0; i < list.getLength(); i++)
         {
+            Song song = (Song) list.getEntry(i);
+            System.out.println("Song Title: " + song.getTitle());
+            System.out.println("Song Artist: " + song.getArtist());
+            System.out.println("Song Genre: " + song.getGenre());
+            System.out.println("Song Year: " + song.getYear());
+            System.out.println("Heard");
+            System.out.print("reading:" + song.calcHobbyHeard(i, readData(inputData))[0]);
+            System.out.print(" art:" + song.calcHobbyHeard(i, readData(inputData))[1]);
+            System.out.print(" sports:" + song.calcHobbyHeard(i, readData(inputData))[2]);
+            System.out.println(" music:" + song.calcHobbyHeard(i, readData(inputData))[3]);
+            System.out.println("Likes");
+            System.out.print("reading:" + song.calcHobbyLikes(i, readData(inputData))[0]);
+            System.out.print(" art:" + song.calcHobbyLikes(i, readData(inputData))[1]);
+            System.out.print(" sports:" + song.calcHobbyLikes(i, readData(inputData))[2]);
+            System.out.println(" music:" + song.calcHobbyLikes(i, readData(inputData))[3]);
             
         }
+        
         Input input = new Input(inputList); 
 
     }
@@ -117,10 +136,19 @@ public class Input
     public static DLinkedList<Song> processList(String fileName) throws IOException
     {
         DLinkedList<Song> list = new DLinkedList<Song>();
-        String[][] parsedList = readData("SongList.csv");
-        String[][] parsedData = readData("MusicSurveyData.csv");
-
-        for (int i = 0; i < 58; i++) // total of 59 songs
+        String[][] parsedList = readData(fileName);
+        //String[][] parsedData = readData("MusicSurveyData.csv");
+        
+        int counter = 0;
+        for (int i = 0; i < parsedList.length; i++)
+        {
+            if (parsedList[i][0] != null)
+            {
+                counter++;
+            }
+        }
+        
+        for (int i = 0; i < counter; i++)
         {
             String title = parsedList[i][0];
             String artist = parsedList[i][1];
@@ -149,6 +177,38 @@ public class Input
                 while (inPointer != curPointer)
                 {
                     compare = sorted.getEntry(curPointer).compareTitleTo(sorted.getEntry(inPointer).getTitle());
+                    if (compare < 0)
+                    {
+                        sorted.swap(inPointer, curPointer);
+                    }
+                    inPointer++;
+                }
+
+                curPointer++;
+            }
+
+        }
+
+        return list;
+
+    }
+    
+    public static DLinkedList<Song> sortByGenre(DLinkedList<Song> list)
+    {
+        if (!list.isEmpty())
+        {
+            DLinkedList<Song> sorted = list;
+            int inPointer = 0;
+            int compare = 0;
+            int curPointer = 1;
+
+
+            while (curPointer != list.getLength())
+            {
+                inPointer = 0;
+                while (inPointer != curPointer)
+                {
+                    compare = sorted.getEntry(curPointer).compareGenreTo(sorted.getEntry(inPointer).getTitle());
                     if (compare < 0)
                     {
                         sorted.swap(inPointer, curPointer);
