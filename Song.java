@@ -568,5 +568,4 @@ public class Song
         }
         return percentage;
     }
-
 }
