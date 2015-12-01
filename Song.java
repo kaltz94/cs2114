@@ -18,12 +18,7 @@ public class Song
     private int year;
     private String genre;
     
-    private String[] majorHeard;
-    private String[] majorLikes;
-    private String[] hobbyHeard;
-    private String[] hobbyLikes;
-    private String[] regionHeard;
-    private String[] regionLikes;
+    private int[] array;
 
     //methods
     /**
@@ -41,12 +36,7 @@ public class Song
         this.artist = artist;
         this.year = year;
         this.genre = genre;
-        majorHeard = null;
-        majorLikes = null;
-        hobbyHeard = null;
-        hobbyLikes = null;
-        regionHeard = null;
-        regionLikes = null;
+        array = new int[4];
     }
 
     /**
@@ -86,37 +76,19 @@ public class Song
     }
     
     /**
+     * returns the array of counts of each type
      * 
+     * ex. if countbyHobby is called, the array will contain 
+     * percentage of how many said yes with "read" -> at array[0], 
+     * how many with "art" -> at array[1], etc.
+     * 
+     * By default it is on hobby.
      */
-    public String[] getMajorHeard()
+    public int[] getCountArray()
     {
-        return majorHeard;
+        return array;
     }
     
-    public String[] getMajorLikes()
-    {
-        return majorLikes;
-    }
-    
-    public String[] getHobbyHeard()
-    {
-        return hobbyHeard;
-    }
-    
-    public String[] getHobbyLikes()
-    {
-        return hobbyLikes;
-    }
-    
-    public String[] getRegionHeard()
-    {
-        return regionHeard;
-    }
-
-    public String[] getRegionLikes()
-    {
-        return regionLikes;
-    }
     
     /**
      * Compare two titles and return an integer
@@ -188,7 +160,9 @@ public class Song
     /**
      * checks if this is equal to the requested object
      * @param obj to be compared
-     * @return true if this is 
+     * @return true if obj is same class as this and has
+     *                 same artist, title, genre, and release year.
+     *         false otherwise
      */
     public boolean equals(Object obj)
     {
@@ -214,20 +188,24 @@ public class Song
     /**
      * Calculate the percentage of the people per major 
      * who heard about this song based on the 2D String
-     * array of survey data parsed in. Count how many
-     * said "yes" to the question for each major type:
+     * array of survey data parsed in. 
+     * Count how many in each major type responded in total. 
+     * Count how many said "yes" to the question for each major type:
      * Math or CMDA, Computer Science, Other, or
      * Other Engineering.
+     * Divide each number of "yes" by each total.
      * 
      * @param index of the song in the song list 2D array
      * @param parsedTextData a 2D array of parsed survey data
-     * @return String array of percentages of people who said "yes"
+     * @return int array of percentages of people who said "yes"
      *         in a format:
      *         [10, 0, 50, 40]
      *         majortype1, majortype2, majortype3, majortype4
      */
-    public String[] calcMajorHeard(int index, String[][] parsedTextData)
+    public int[] calcMajorHeard(int index, String[][] parsedTextData)
     {   
+        
+        
         int totalMath = 0; // count how many of each major type responded
         int totalCS = 0;
         int totalOther = 0;
@@ -255,7 +233,9 @@ public class Song
         {
             if (parsedTextData[i][2].equals("Math or CMDA"))
             {
-                if (parsedTextData[i][index] != null)
+                if (parsedTextData[i][index] != null && 
+                        (parsedTextData[i][index].equals("Yes") || 
+                                parsedTextData[i][index].equals("No")))
                 {
                     totalMath++;
                     if (parsedTextData[i][index].equals("Yes"))
@@ -266,7 +246,9 @@ public class Song
             }
             else if (parsedTextData[i][2].equals("Computer Science"))
             {
-                if (parsedTextData[i][index] != null)
+                if (parsedTextData[i][index] != null && 
+                        (parsedTextData[i][index].equals("Yes") || 
+                                parsedTextData[i][index].equals("No")))
                 {
                     totalCS++;
                     if (parsedTextData[i][index].equals("Yes"))
@@ -277,7 +259,9 @@ public class Song
             }
             else if (parsedTextData[i][2].equals("Other"))
             {
-                if (parsedTextData[i][index] != null)
+                if (parsedTextData[i][index] != null && 
+                        (parsedTextData[i][index].equals("Yes") || 
+                                parsedTextData[i][index].equals("No")))
                 {
                     totalOther++;
                     if (parsedTextData[i][index].equals("Yes"))
@@ -288,7 +272,9 @@ public class Song
             }
             else if (parsedTextData[i][2].equals("Other Engineering"))
             {
-                if (parsedTextData[i][index] != null)
+                if (parsedTextData[i][index] != null && 
+                        (parsedTextData[i][index].equals("Yes") || 
+                                parsedTextData[i][index].equals("No")))
                 {
                     totalEnge++;
                     if (parsedTextData[i][index].equals("Yes"))
@@ -299,39 +285,33 @@ public class Song
             }
         }
 
-        countMath = calcPercent(countMath, totalMath); 
-        countCS = calcPercent(countCS, totalCS);
-        countOther = calcPercent(countOther, totalOther);
-        countEnge = calcPercent(countEnge, totalEnge);
+        array[0] = calcPercent(countMath, totalMath); 
+        array[1] = calcPercent(countCS, totalCS);
+        array[2] = calcPercent(countOther, totalOther);
+        array[3] = calcPercent(countEnge, totalEnge);
         // refer to calcPercent(int, int) below
 
-        String[] majorHeard = new String[4];
-        majorHeard[0] = "" + countMath;
-        majorHeard[1] = "" + countCS;
-        majorHeard[2] = "" + countOther;
-        majorHeard[3] = "" + countEnge;
-        
-        this.majorHeard = majorHeard;
-        
-        return majorHeard;
+        return array;
     }
 
     /**
      * Calculate the percentage of the people per major 
      * who like this song based on the 2D String
-     * array of survey data parsed in. Count how many
-     * said "yes" to the question for each major type:
+     * array of survey data parsed in. 
+     * Count how many in each major responded in total. 
+     * Count how many said "yes" to the question for each major type:
      * Math or CMDA, Computer Science, Other, or
      * Other Engineering.
+     * Divide each number of "yes" by each total.
      * 
      * @param index of the song in the song list 2D array
      * @param parsedTextData a 2D array of parsed survey data
-     * @return String array of percentages of people who said "yes"
+     * @return int array of percentages of people who said "yes"
      *         in a format:
      *         [10, 0, 50, 40]
      *         majortype1, majortype2, majortype3, majortype4
      */
-    public String[] calcMajorLikes(int index, String[][] parsedTextData)
+    public int[] calcMajorLikes(int index, String[][] parsedTextData)
     {
         int totalMath = 0;
         int totalCS = 0;
@@ -352,7 +332,9 @@ public class Song
         {
             if (parsedTextData[i][2].equals("Math or CMDA"))
             {
-                if (parsedTextData[i][index] != null)
+                if (parsedTextData[i][index] != null && 
+                        (parsedTextData[i][index].equals("Yes") || 
+                                parsedTextData[i][index].equals("No")))
                 {
                     totalMath++;
                     if (parsedTextData[i][index].equals("Yes"))
@@ -363,7 +345,9 @@ public class Song
             }
             else if (parsedTextData[i][2].equals("Computer Science"))
             {
-                if (parsedTextData[i][index] != null)
+                if (parsedTextData[i][index] != null && 
+                        (parsedTextData[i][index].equals("Yes") || 
+                                parsedTextData[i][index].equals("No")))
                 {
                     totalCS++;
                     if (parsedTextData[i][index].equals("Yes"))
@@ -374,7 +358,9 @@ public class Song
             }
             else if (parsedTextData[i][2].equals("Other"))
             {
-                if (parsedTextData[i][index] != null)
+                if (parsedTextData[i][index] != null && 
+                        (parsedTextData[i][index].equals("Yes") || 
+                                parsedTextData[i][index].equals("No")))
                 {
                     totalOther++;
                     if (parsedTextData[i][index].equals("Yes"))
@@ -385,7 +371,9 @@ public class Song
             }
             else if (parsedTextData[i][2].equals("Other Engineering"))
             {
-                if (parsedTextData[i][index] != null)
+                if (parsedTextData[i][index] != null && 
+                        (parsedTextData[i][index].equals("Yes") || 
+                                parsedTextData[i][index].equals("No")))
                 {
                     totalEnge++;
                     if (parsedTextData[i][index].equals("Yes"))
@@ -396,37 +384,31 @@ public class Song
             }
         }
 
-        countMath = calcPercent(countMath, totalMath); 
-        countCS = calcPercent(countCS, totalCS);
-        countOther = calcPercent(countOther, totalOther);
-        countEnge = calcPercent(countEnge, totalEnge);
+        array[0] = calcPercent(countMath, totalMath); 
+        array[1] = calcPercent(countCS, totalCS);
+        array[2] = calcPercent(countOther, totalOther);
+        array[3] = calcPercent(countEnge, totalEnge);
 
-        String[] majorLikes = new String[4];
-        majorLikes[0] = "" + countMath;
-        majorLikes[1] = "" + countCS;
-        majorLikes[2] = "" + countOther;
-        majorLikes[3] = "" + countEnge;
-        
-        this.majorLikes = majorLikes;
-        
-        return majorLikes;
+        return array;
     }
 
     /**
      * Calculate the percentage of the people per region 
      * who heard about this song based on the 2D String
-     * array of survey data parsed in. Count how many
-     * said "yes" to the question for each region type:
-     * Southeast, Northeast, US other than two, outside US.
+     * array of survey data parsed in. 
+     * Count how many in each region responded in total. 
+     * Then, count how many said "yes" to the question for 
+     * each region type: Southeast, Northeast, US other than two, outside US.
+     * Divide each number of "yes" by each total.
      * 
      * @param index of the song in the song list 2D array
      * @param parsedTextData a 2D array of parsed survey data
-     * @return String array of percentages of people who said "yes"
+     * @return int array of percentages of people who said "yes"
      *         in a format:
-     *         [10, 0, 50, 40]
+     *         [100, 0, 50, 40]
      *         regiontype1, regiontype2, regiontype3, regiontype4
      */
-    public String[] calcRegionHeard(int index, String[][] parsedTextData)
+    public int[] calcRegionHeard(int index, String[][] parsedTextData)
     {
         int totalSE = 0;
         int totalNE = 0;
@@ -446,7 +428,9 @@ public class Song
             {
                 if (parsedTextData[i][4].equals("Southeast"))
                 {
-                    if (parsedTextData[i][index] != null)
+                    if (parsedTextData[i][index] != null && 
+                            (parsedTextData[i][index].equals("Yes") || 
+                                    parsedTextData[i][index].equals("No")))
                     {
                         totalSE++;
                         if (parsedTextData[i][index].equals("Yes"))
@@ -457,7 +441,9 @@ public class Song
                 }
                 else if (parsedTextData[i][4].equals("Northeast"))
                 {
-                    if (parsedTextData[i][index] != null)
+                    if (parsedTextData[i][index] != null && 
+                            (parsedTextData[i][index].equals("Yes") || 
+                                    parsedTextData[i][index].equals("No")))
                     {
                         totalNE++;
                         if (parsedTextData[i][index].equals("Yes"))
@@ -468,7 +454,9 @@ public class Song
                 }
                 else if (parsedTextData[i][4].equals("United States (other than Southeast or Northwest)"))
                 {
-                    if (parsedTextData[i][index] != null)
+                    if (parsedTextData[i][index] != null && 
+                            (parsedTextData[i][index].equals("Yes") || 
+                                    parsedTextData[i][index].equals("No")))
                     {
                         totalOther++;
                         if (parsedTextData[i][index].equals("Yes"))
@@ -479,7 +467,9 @@ public class Song
                 }
                 else if (parsedTextData[i][4].equals("Outside of United States"))
                 {
-                    if (parsedTextData[i][index] != null)
+                    if (parsedTextData[i][index] != null && 
+                            (parsedTextData[i][index].equals("Yes") || 
+                                    parsedTextData[i][index].equals("No")))
                     {
                         totalOut++;
                         if (parsedTextData[i][index].equals("Yes"))
@@ -491,28 +481,22 @@ public class Song
             }
         }
 
-        countSE = calcPercent(countSE, totalSE); 
-        countNE = calcPercent(countNE, totalNE);
-        countOther = calcPercent(countOther, totalOther);
-        countOut = calcPercent(countOut, totalOut);
+        array[0] = calcPercent(countSE, totalSE); 
+        array[1] = calcPercent(countNE, totalNE);
+        array[2] = calcPercent(countOther, totalOther);
+        array[3] = calcPercent(countOut, totalOut);
 
-        String[] regionHeard = new String[4];
-        regionHeard[0] = "" + countSE;
-        regionHeard[1] = "" + countNE;
-        regionHeard[2] = "" + countOther;
-        regionHeard[3] = "" + countOut;
-        
-        this.regionHeard = regionHeard;
-
-        return regionHeard;
+        return array;
     }
 
     /**
      * Calculate the percentage of the people per region 
      * who like this song based on the 2D String
-     * array of survey data parsed in. Count how many
-     * said "yes" to the question for each region type:
+     * array of survey data parsed in. 
+     * Count how many in each region responded in total. 
+     * Count how many said "yes" to the question for each region type:
      * Southeast, Northeast, US other than two, outside US.
+     * Divide each number of "yes" by each total.
      * 
      * @param index of the song in the song list 2D array
      * @param parsedTextData a 2D array of parsed survey data
@@ -521,7 +505,7 @@ public class Song
      *         [10, 0, 50, 40]
      *         regiontype1, regiontype2, regiontype3, regiontype4
      */
-    public String[] calcRegionLikes(int index, String[][] parsedTextData)
+    public int[] calcRegionLikes(int index, String[][] parsedTextData)
     {
         int countSE = 0;
         int countNE = 0;
@@ -559,22 +543,15 @@ public class Song
         countOther = calcPercent(countOther, sum);
         countOut = calcPercent(countOut, sum);
 
-        String[] regionLikes = new String[4];
-        regionLikes[0] = "" + countSE;
-        regionLikes[1] = "" + countNE;
-        regionLikes[2] = "" + countOther;
-        regionLikes[3] = "" + countOut;
-        
-        this.regionLikes = regionLikes;
-        
-        return regionLikes;
+        return array;
     }
 
     /**
      * Calculate the percentage of the people per hobby 
      * who heard about this song based on the 2D String
-     * array of survey data parsed in. Count how many
-     * said "yes" to the question for each hobby type:
+     * array of survey data parsed in. 
+     * Count how many in each hobby type responded in total. 
+     * Count how many said "yes" to the question for each hobby type:
      * read, art, sport, and music.
      * 
      * @param index of the song in the song list 2D array
@@ -584,7 +561,7 @@ public class Song
      *         [10, 0, 50, 40]
      *         hobby1, hobby2, hobby3, hobby4
      */
-    public String[] calcHobbyHeard(int index, String[][] parsedTextData)
+    public int[] calcHobbyHeard(int index, String[][] parsedTextData)
     {
         int totalRead = 0; // count how many of each hobby type responded
         int totalArt = 0;
@@ -604,7 +581,9 @@ public class Song
             {
                 if (parsedTextData[i][4].equals("reading"))
                 {
-                    if (parsedTextData[i][index] != null)
+                    if (parsedTextData[i][index] != null && 
+                            (parsedTextData[i][index].equals("Yes") || 
+                                    parsedTextData[i][index].equals("No")))
                     {
                         totalRead++;
                         if (parsedTextData[i][index].equals("Yes"))
@@ -615,102 +594,9 @@ public class Song
                 }
                 else if (parsedTextData[i][4].equals("art"))
                 {
-                    if (parsedTextData[i][index] != null)
-                    {
-                        totalArt++;
-                        if (parsedTextData[i][index].equals("Yes"))
-                        {
-                            countArt++;
-                        }
-                    }   
-                }
-                else if (parsedTextData[i][4].equals("sports"))
-                {
-                    if (parsedTextData[i][index] != null)
-                    {
-                        totalSport++;
-                        if (parsedTextData[i][index].equals("Yes"))
-                        {
-                            countSport++;
-                        }
-                    }   
-                }
-                else if (parsedTextData[i][4].equals("music"))
-                {
-                    if (parsedTextData[i][index] != null)
-                    {
-                        totalMusic++;
-                        if (parsedTextData[i][index].equals("Yes"))
-                        {
-                            countMusic++;
-                        }
-                    }   
-                }
-            }
-        }
-
-        countRead = calcPercent(countRead, totalRead); 
-        countArt = calcPercent(countArt, totalArt);
-        countSport = calcPercent(countSport, totalSport);
-        countMusic = calcPercent(countMusic, totalMusic);
-
-        String[] hobbyHeard = new String[4];
-        hobbyHeard[0] = "" + countRead;
-        hobbyHeard[1] = "" + countArt;
-        hobbyHeard[2] = "" + countSport;
-        hobbyHeard[3] = "" + countMusic;
-        
-        this.hobbyHeard = hobbyHeard;
-        
-        return hobbyHeard;
-    }
-
-    /**
-     * Calculate the percentage of the people per hobby 
-     * who like this song based on the 2D String
-     * array of survey data parsed in. Count how many
-     * said "yes" to the question for each hobby type:
-     * read, art, sport, and music.
-     * 
-     * @param index of the song in the song list 2D array
-     * @param parsedTextData a 2D array of parsed survey data
-     * @return String array of percentages of people who said "yes"
-     *         in a format:
-     *         [10, 0, 50, 40]
-     *         hobby1, hobby2, hobby3, hobby4
-     */
-    public String[] calcHobbyLikes(int index, String[][] parsedTextData)
-    {
-        int totalRead = 0; // count how many of each hobby type responded
-        int totalArt = 0;
-        int totalSport = 0;
-        int totalMusic = 0;
-
-        int countRead = 0; // count how many said yes
-        int countArt = 0;
-        int countSport = 0;
-        int countMusic = 0;
-        
-        index = index + 6 + index;
-
-        for (int i = 0; i < parsedTextData.length; i++)
-        {
-            if (parsedTextData[i][4] != null)
-            {
-                if (parsedTextData[i][4].equals("reading"))
-                {
-                    if (parsedTextData[i][index] != null)
-                    {
-                        totalRead++;
-                        if (parsedTextData[i][index].equals("Yes"))
-                        {
-                            countRead++;
-                        }
-                    }          
-                }
-                else if (parsedTextData[i][4].equals("art"))
-                {
-                    if (parsedTextData[i][index] != null)
+                    if (parsedTextData[i][index] != null && 
+                            (parsedTextData[i][index].equals("Yes") || 
+                                    parsedTextData[i][index].equals("No")))
                     {
                         totalArt++;
                         if (parsedTextData[i][index].equals("Yes"))
@@ -734,7 +620,9 @@ public class Song
                 }
                 else if (parsedTextData[i][4].equals("music"))
                 {
-                    if (parsedTextData[i][index] != null)
+                    if (parsedTextData[i][index] != null && 
+                            (parsedTextData[i][index].equals("Yes") || 
+                                    parsedTextData[i][index].equals("No")))
                     {
                         totalMusic++;
                         if (parsedTextData[i][index].equals("Yes"))
@@ -746,20 +634,111 @@ public class Song
             }
         }
 
-        countRead = calcPercent(countRead, totalRead); 
-        countArt = calcPercent(countArt, totalArt);
-        countSport = calcPercent(countSport, totalSport);
-        countMusic = calcPercent(countMusic, totalMusic);
+        array[0] = calcPercent(countRead, totalRead); 
+        array[1] = calcPercent(countArt, totalArt);
+        array[2] = calcPercent(countSport, totalSport);
+        array[3] = calcPercent(countMusic, totalMusic);
+        
+        return array;
+    }
 
-        String[] hobbyLikes = new String[4];
-        hobbyLikes[0] = "" + countRead;
-        hobbyLikes[1] = "" + countArt;
-        hobbyLikes[2] = "" + countSport;
-        hobbyLikes[3] = "" + countMusic;
+    /**
+     * Calculate the percentage of the people per hobby 
+     * who like this song based on the 2D String
+     * array of survey data parsed in. 
+     * Count how many in each hobby type responded in total.
+     * Count how many said "yes" to the question for each hobby type:
+     * read, art, sport, and music.
+     * Divide each number of "yes" by each total.
+     * 
+     * @param index of the song in the song list 2D array
+     * @param parsedTextData a 2D array of parsed survey data
+     * @return String array of percentages of people who said "yes"
+     *         in a format:
+     *         [10, 0, 50, 40]
+     *         hobby1, hobby2, hobby3, hobby4
+     */
+    public int[] calcHobbyLikes(int index, String[][] parsedTextData)
+    {
+        int totalRead = 0; // count how many of each hobby type responded
+        int totalArt = 0;
+        int totalSport = 0;
+        int totalMusic = 0;
+
+        int countRead = 0; // count how many said yes
+        int countArt = 0;
+        int countSport = 0;
+        int countMusic = 0;
         
-        this.hobbyLikes = hobbyLikes;
+        index = index + 6 + index;
+
+        for (int i = 0; i < parsedTextData.length; i++)
+        {
+            if (parsedTextData[i][4] != null)
+            {
+                if (parsedTextData[i][4].equals("reading"))
+                {
+                    if (parsedTextData[i][index] != null && 
+                            (parsedTextData[i][index].equals("Yes") || 
+                                    parsedTextData[i][index].equals("No")))
+                    {
+                        
+                        totalRead++;
+                        if (parsedTextData[i][index].equals("Yes"))
+                        {
+                            countRead++;
+                        }
+                    }
+                }
+                else if (parsedTextData[i][4].equals("art"))
+                {
+                    if (parsedTextData[i][index] != null && 
+                            (parsedTextData[i][index].equals("Yes") || 
+                                    parsedTextData[i][index].equals("No")))
+                    {
+                        totalArt++;
+                        if (parsedTextData[i][index].equals("Yes"))
+                        {
+                            countArt++;
+                        }
+                    }   
+                }
+                else if (parsedTextData[i][4].equals("sports"))
+                {
+                    if (parsedTextData[i][index] != null && 
+                            (parsedTextData[i][index].equals("Yes") || 
+                                    parsedTextData[i][index].equals("No")))
+                    {
+                        totalSport++;
+                        if (parsedTextData[i][index].equals("Yes"))
+                        {
+                            countSport++;
+                        }
+                    }   
+                }
+                else if (parsedTextData[i][4].equals("music"))
+                {
+                    if (parsedTextData[i][index] != null && 
+                            (parsedTextData[i][index].equals("Yes") || 
+                                    parsedTextData[i][index].equals("No")))
+                    {
+                        totalMusic++;
+                        if (parsedTextData[i][index].equals("Yes"))
+                        {
+                            countMusic++;
+                        }
+                    }   
+                }
+            }
+        }
+
+        array[0] = calcPercent(countRead, totalRead); 
+        array[1] = calcPercent(countArt, totalArt);
+        array[2] = calcPercent(countSport, totalSport);
+        array[3] = calcPercent(countMusic, totalMusic);
+
         
-        return hobbyLikes;
+        return array;
     }
 
     /**
@@ -776,7 +755,6 @@ public class Song
         if (count != 0 && sum != 0)
         {
             double percent = (double)count * 100 / (double)sum;
-            percent = Math.round(percent);
             percentage = (int)percent;
         }
         return percentage;

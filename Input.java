@@ -25,46 +25,194 @@ public class Input
     public Input(String fileName) throws IOException
     {
         GUISurveyWindow window = new GUISurveyWindow(processList(fileName));
+
     }
 
     /**
      */
     public static void main(String[] args) throws IOException
     {
-        String inputData = "MusicSurveyDataTest1.csv";
-        String inputList = "SongListTest1.csv";
+        String inputData = "";
+        String inputList = "";
+        if (args.length != 0)
+        {
+            if (args[0] != null)
+            {
+                inputData = args[0];
+            }
+            if (args[1] != null)
+            {
+                inputList = args[1];
+            }
+        }
+        else
+        {
+            inputData = "MusicSurveyData.csv";
+            inputList = "SongList.csv";
+        }
+
+        /**
+         * was for the intermediate submission output.
+         * pending if needed.
+         */
         /*
-        if (args[0] != null)
+        if (inputList.equals("SongListTest1.csv"))
         {
-            inputData = args[0];
+            SongList list = processList(inputList);
+            list.sortGenre();
+
+            for (int i = 0; i < list.getLength(); i++)
+            {
+                Song song = list.getEntry(i);
+                int index = processList(inputList).indexOf(song);
+                System.out.println("Song Title: " + song.getTitle());
+                System.out.println("Song Artist: " + song.getArtist());
+                System.out.println("Song Genre: " + song.getGenre());
+                System.out.println("Song Year: " + song.getYear());
+                System.out.println("Heard");
+                System.out.print("reading:" + song.calcHobbyHeard(index, readData(inputData))[0]);
+                System.out.print(" art:" + song.calcHobbyHeard(index, readData(inputData))[1]);
+                System.out.print(" sports:" + song.calcHobbyHeard(index, readData(inputData))[2]);
+                System.out.println(" music:" + song.calcHobbyHeard(index, readData(inputData))[3]);
+                System.out.println("Likes");
+                System.out.print("reading:" + song.calcHobbyLikes(index, readData(inputData))[0]);
+                System.out.print(" art:" + song.calcHobbyLikes(index, readData(inputData))[1]);
+                System.out.print(" sports:" + song.calcHobbyLikes(index, readData(inputData))[2]);
+                System.out.println(" music:" + song.calcHobbyLikes(index, readData(inputData))[3]);
+                System.out.println("");
+
+            }
+
+            list.sortTitle();
+
+            for (int i = 0; i < list.getLength(); i++)
+            {
+                Song song = list.getEntry(i);
+                int index = processList(inputList).indexOf(song);
+                System.out.println("Song Title: " + song.getTitle());
+                System.out.println("Song Artist: " + song.getArtist());
+                System.out.println("Song Genre: " + song.getGenre());
+                System.out.println("Song Year: " + song.getYear());
+                System.out.println("Heard");
+                System.out.print("reading:" + song.calcHobbyHeard(index, readData(inputData))[0]);
+                System.out.print(" art:" + song.calcHobbyHeard(index, readData(inputData))[1]);
+                System.out.print(" sports:" + song.calcHobbyHeard(index, readData(inputData))[2]);
+                System.out.println(" music:" + song.calcHobbyHeard(index, readData(inputData))[3]);
+                System.out.println("Likes");
+                System.out.print("reading:" + song.calcHobbyLikes(index, readData(inputData))[0]);
+                System.out.print(" art:" + song.calcHobbyLikes(index, readData(inputData))[1]);
+                System.out.print(" sports:" + song.calcHobbyLikes(index, readData(inputData))[2]);
+                System.out.println(" music:" + song.calcHobbyLikes(index, readData(inputData))[3]);
+                System.out.println("");
+
+            }
         }
-        if (args[1] != null)
+        if (inputList.equals("SongListTest2.csv"))
         {
-            inputList = args[1];
+            SongList list = processList(inputList);
+            list.sortTitle();
+
+            for (int i = 0; i < list.getLength(); i++)
+            {
+                Song song = list.getEntry(i);
+                int index = processList(inputList).indexOf(song);
+                System.out.println("Song Title: " + song.getTitle());
+                System.out.println("Song Artist: " + song.getArtist());
+                System.out.println("Song Genre: " + song.getGenre());
+                System.out.println("Song Year: " + song.getYear());
+                System.out.println("Heard");
+                System.out.print("reading:" + song.calcHobbyHeard(index, readData(inputData))[0]);
+                System.out.print(" art:" + song.calcHobbyHeard(index, readData(inputData))[1]);
+                System.out.print(" sports:" + song.calcHobbyHeard(index, readData(inputData))[2]);
+                System.out.println(" music:" + song.calcHobbyHeard(index, readData(inputData))[3]);
+                System.out.println("Likes");
+                System.out.print("reading:" + song.calcHobbyLikes(index, readData(inputData))[0]);
+                System.out.print(" art:" + song.calcHobbyLikes(index, readData(inputData))[1]);
+                System.out.print(" sports:" + song.calcHobbyLikes(index, readData(inputData))[2]);
+                System.out.println(" music:" + song.calcHobbyLikes(index, readData(inputData))[3]);
+                System.out.println("");
+
+            }
+
+            list.sortGenre();
+
+            for (int i = 0; i < list.getLength(); i++)
+            {
+                Song song = list.getEntry(i);
+                int index = processList(inputList).indexOf(song);
+                System.out.println("Song Title: " + song.getTitle());
+                System.out.println("Song Artist: " + song.getArtist());
+                System.out.println("Song Genre: " + song.getGenre());
+                System.out.println("Song Year: " + song.getYear());
+                System.out.println("Heard");
+                System.out.print("reading:" + song.calcHobbyHeard(index, readData(inputData))[0]);
+                System.out.print(" art:" + song.calcHobbyHeard(index, readData(inputData))[1]);
+                System.out.print(" sports:" + song.calcHobbyHeard(index, readData(inputData))[2]);
+                System.out.println(" music:" + song.calcHobbyHeard(index, readData(inputData))[3]);
+                System.out.println("Likes");
+                System.out.print("reading:" + song.calcHobbyLikes(index, readData(inputData))[0]);
+                System.out.print(" art:" + song.calcHobbyLikes(index, readData(inputData))[1]);
+                System.out.print(" sports:" + song.calcHobbyLikes(index, readData(inputData))[2]);
+                System.out.println(" music:" + song.calcHobbyLikes(index, readData(inputData))[3]);
+                System.out.println("");
+
+            }
         }
-        */
-        DLinkedList list = sortByGenre(sortByTitle(processList(inputList)));
-        
-        for (int i = 0; i < list.getLength(); i++)
+        if (inputList.equals("SongListNoGenreRepeats.csv"))
         {
-            Song song = (Song) list.getEntry(i);
-            System.out.println("Song Title: " + song.getTitle());
-            System.out.println("Song Artist: " + song.getArtist());
-            System.out.println("Song Genre: " + song.getGenre());
-            System.out.println("Song Year: " + song.getYear());
-            System.out.println("Heard");
-            System.out.print("reading:" + song.calcHobbyHeard(i, readData(inputData))[0]);
-            System.out.print(" art:" + song.calcHobbyHeard(i, readData(inputData))[1]);
-            System.out.print(" sports:" + song.calcHobbyHeard(i, readData(inputData))[2]);
-            System.out.println(" music:" + song.calcHobbyHeard(i, readData(inputData))[3]);
-            System.out.println("Likes");
-            System.out.print("reading:" + song.calcHobbyLikes(i, readData(inputData))[0]);
-            System.out.print(" art:" + song.calcHobbyLikes(i, readData(inputData))[1]);
-            System.out.print(" sports:" + song.calcHobbyLikes(i, readData(inputData))[2]);
-            System.out.println(" music:" + song.calcHobbyLikes(i, readData(inputData))[3]);
+            SongList list = processList(inputList);
+            list.sortGenre();
+
+            for (int i = 0; i < list.getLength(); i++)
+            {
+                Song song = list.getEntry(i);
+                int index = processList(inputList).indexOf(song);
+                System.out.println("Song Title: " + song.getTitle());
+                System.out.println("Song Artist: " + song.getArtist());
+                System.out.println("Song Genre: " + song.getGenre());
+                System.out.println("Song Year: " + song.getYear());
+                System.out.println("Heard");
+                System.out.print("reading:" + song.calcHobbyHeard(index, readData(inputData))[0]);
+                System.out.print(" art:" + song.calcHobbyHeard(index, readData(inputData))[1]);
+                System.out.print(" sports:" + song.calcHobbyHeard(index, readData(inputData))[2]);
+                System.out.println(" music:" + song.calcHobbyHeard(index, readData(inputData))[3]);
+                System.out.println("Likes");
+                System.out.print("reading:" + song.calcHobbyLikes(index, readData(inputData))[0]);
+                System.out.print(" art:" + song.calcHobbyLikes(index, readData(inputData))[1]);
+                System.out.print(" sports:" + song.calcHobbyLikes(index, readData(inputData))[2]);
+                System.out.println(" music:" + song.calcHobbyLikes(index, readData(inputData))[3]);
+                System.out.println("");
+
+            }
+            
+            list.sortTitle();
+
+            for (int i = 0; i < list.getLength(); i++)
+            {
+                Song song = list.getEntry(i);
+                int index = processList(inputList).indexOf(song);
+                System.out.println("Song Title: " + song.getTitle());
+                System.out.println("Song Artist: " + song.getArtist());
+                System.out.println("Song Genre: " + song.getGenre());
+                System.out.println("Song Year: " + song.getYear());
+                System.out.println("Heard");
+                System.out.print("reading:" + song.calcHobbyHeard(index, readData(inputData))[0]);
+                System.out.print(" art:" + song.calcHobbyHeard(index, readData(inputData))[1]);
+                System.out.print(" sports:" + song.calcHobbyHeard(index, readData(inputData))[2]);
+                System.out.println(" music:" + song.calcHobbyHeard(index, readData(inputData))[3]);
+                System.out.println("Likes");
+                System.out.print("reading:" + song.calcHobbyLikes(index, readData(inputData))[0]);
+                System.out.print(" art:" + song.calcHobbyLikes(index, readData(inputData))[1]);
+                System.out.print(" sports:" + song.calcHobbyLikes(index, readData(inputData))[2]);
+                System.out.println(" music:" + song.calcHobbyLikes(index, readData(inputData))[3]);
+                System.out.println("");
+
+            }
+
             
         }
-        
+        */
+
         Input input = new Input(inputList); 
 
     }
@@ -133,12 +281,12 @@ public class Input
      * @return list of songs
      * @throws IOException
      */
-    public static DLinkedList<Song> processList(String fileName) throws IOException
+    public static SongList processList(String fileName) throws IOException
     {
-        DLinkedList<Song> list = new DLinkedList<Song>();
+        SongList list = new SongList();
         String[][] parsedList = readData(fileName);
         //String[][] parsedData = readData("MusicSurveyData.csv");
-        
+
         int counter = 0;
         for (int i = 0; i < parsedList.length; i++)
         {
@@ -147,7 +295,7 @@ public class Input
                 counter++;
             }
         }
-        
+
         for (int i = 0; i < counter; i++)
         {
             String title = parsedList[i][0];
@@ -155,74 +303,11 @@ public class Input
             int year = Integer.parseInt(parsedList[i][2]);
             String genre = parsedList[i][3];
             Song song = new Song(title, artist, year, genre);
-            list.addBeginning(song);
+            list.add(song);
         }
 
         return list;
     }
 
-    public static DLinkedList<Song> sortByTitle(DLinkedList<Song> list)
-    {
-        if (!list.isEmpty())
-        {
-            DLinkedList<Song> sorted = list;
-            int inPointer = 0;
-            int compare = 0;
-            int curPointer = 1;
-
-
-            while (curPointer != list.getLength())
-            {
-                inPointer = 0;
-                while (inPointer != curPointer)
-                {
-                    compare = sorted.getEntry(curPointer).compareTitleTo(sorted.getEntry(inPointer).getTitle());
-                    if (compare < 0)
-                    {
-                        sorted.swap(inPointer, curPointer);
-                    }
-                    inPointer++;
-                }
-
-                curPointer++;
-            }
-
-        }
-
-        return list;
-
-    }
-    
-    public static DLinkedList<Song> sortByGenre(DLinkedList<Song> list)
-    {
-        if (!list.isEmpty())
-        {
-            DLinkedList<Song> sorted = list;
-            int inPointer = 0;
-            int compare = 0;
-            int curPointer = 1;
-
-
-            while (curPointer != list.getLength())
-            {
-                inPointer = 0;
-                while (inPointer != curPointer)
-                {
-                    compare = sorted.getEntry(curPointer).compareGenreTo(sorted.getEntry(inPointer).getGenre());
-                    if (compare < 0)
-                    {
-                        sorted.swap(inPointer, curPointer);
-                    }
-                    inPointer++;
-                }
-
-                curPointer++;
-            }
-
-        }
-
-        return list;
-
-    }
 
 }
