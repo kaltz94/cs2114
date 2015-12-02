@@ -22,9 +22,9 @@ public class Input
      * @param fileName of input data
      * @throws IOException
      */
-    public Input(String fileName) throws IOException
+    public Input(String fileName1, String fileName2) throws IOException
     {
-        GUISurveyWindow window = new GUISurveyWindow(processList(fileName));
+        GUISurveyWindow window = new GUISurveyWindow(processList(fileName1), readData(fileName2));
 
     }
 
@@ -51,11 +51,6 @@ public class Input
             inputList = "SongList.csv";
         }
 
-        /**
-         * was for the intermediate submission output.
-         * pending if needed.
-         */
-        /*
         if (inputList.equals("SongListTest1.csv"))
         {
             SongList list = processList(inputList);
@@ -211,9 +206,8 @@ public class Input
 
             
         }
-        */
 
-        Input input = new Input(inputList); 
+        Input input = new Input(inputList, inputData); 
 
     }
 
